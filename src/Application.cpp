@@ -1,10 +1,9 @@
 #include "Application.h"
 
-Application::Application(int width, int height, const char *title)
+Application::Application(int width, int height, const char *title, int frameRate)
 {
-    sf::ContextSettings settings;
-    settings.antialiasingLevel = 8;
-    window = new sf::RenderWindow(sf::VideoMode(width, height), title, sf::Style::Default, settings);
+    this->frameRate = frameRate;
+    window = new sf::RenderWindow(sf::VideoMode(width, height), title, sf::Style::Fullscreen);
 }
 
 Application::~Application()
@@ -16,7 +15,7 @@ void Application::run()
 {
 
     sf::Clock gameClock;
-    sf::Time timePerFrame = sf::seconds(1.f / FRAME_RATE);
+    sf::Time timePerFrame = sf::seconds(1.f / frameRate);
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
     sf::Time timeSleep;

@@ -6,12 +6,12 @@
 class Application
 {
 protected:
-    const int FRAME_RATE = 60;
+    int frameRate = 60;
     sf::RenderWindow *window;
 
 public:
     Application() = delete;
-    Application(int width, int height, const char *title);
+    Application(int width, int height, const char *title, int frameRate);
     ~Application();
 
     void run();

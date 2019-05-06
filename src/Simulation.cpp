@@ -1,6 +1,8 @@
 #include "Simulation.h"
 
-Simulation::Simulation(int width, int height, const char *title) : Application(width, height, title) {}
+sf::Vector2i Simulation::mousePosition;
+
+Simulation::Simulation(int width, int height, const char *title, int frameRate) : Application(width, height, title, frameRate) {}
 
 void Simulation::processInput()
 {
@@ -9,6 +11,8 @@ void Simulation::processInput()
         if (event.type == sf::Event::Closed)
             window->close();
     }
+
+    mousePosition = sf::Mouse::getPosition(*window);
 }
 
 void Simulation::update(sf::Time deltaTime)

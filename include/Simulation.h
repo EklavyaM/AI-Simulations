@@ -8,12 +8,15 @@
 class Simulation : public Application
 {
 
+public:
+    static sf::Vector2i mousePosition;
+
 private:
     sf::Event event;
     std::list<ISimulatable *> simulatables;
 
 public:
-    Simulation(int width, int height, const char *title);
+    Simulation(int width, int height, const char *title, int frameRate);
     void addSimulatable(ISimulatable *simulatable);
 
 private:
