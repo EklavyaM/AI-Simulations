@@ -56,3 +56,8 @@ void Util::log(Util::LogLevel logLevel, const char *message)
         break;
     }
 }
+
+float Util::lerp(float a, float b, float t)
+{
+    return a + (b - a) * t;
+}

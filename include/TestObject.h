@@ -1,47 +1,55 @@
 #pragma once
 
 #include <cmath>
-
 #include <SFML/Graphics.hpp>
+#include "IParticle.h"
 
-#include "ISimulatable.h"
-
-class TestObject : public ISimulatable
+class TestObject : public IParticle
 {
-public:
-    enum Type
-    {
-        Color,
-        Texture
-    };
-
 private:
-    Type testObjectType;
     sf::Vector2f forward;
-    float lastFrameAcceleration;
     float alpha;
 
 protected:
-    sf::Vector2f position;
     sf::RectangleShape *RectangularBound;
+
+    sf::Vector2f position;
     sf::Color shapeColor;
+
+    static float speedMin, speedMax;
+    static float sizeMin, sizeMax;
+    static float alphaMin, alphaMax;
 
     float moveSpeed;
     float rotationSpeed;
-    float angularAcceleration;
-    float moveSpeedAcceleration;
 
 public:
-    TestObject(int width, int height, sf::Vector2f position, float moveSpeed, float rotationSpeed, sf::Color color);
-    TestObject(int width, int height, sf::Vector2f position, float moveSpeed, float rotationSpeed, sf::Color color, const sf::Texture &texture);
+    TestObject(int width, int height, sf::Vector2f position,
+               float moveSpeed, float rotationSpeed, sf::Color color);
+
+    TestObject(int width, int height, sf::Vector2f position,
+               float moveSpeed, float rotationSpeed, sf::Color color,
+               const sf::Texture &texture);
 
     void draw(sf::RenderWindow *window) override;
-    void update(sf::Time deltaTime) override;
+    void update(float deltaTime) override;
+
+    void setPosition(int x, int y) override;
+    void setSize(int width, int height) override;
+
+    void setColor(sf::Color &color) override;
+
+    static void setParameters(float sizeMin, float sizeMax,
+                              float speedMin, float speedMax,
+                              float alphaMin, float alphaMax);
 
 protected:
-    TestObject(int width, int height, sf::Vector2f position, float moveSpeed, float rotationSpeed);
+    TestObject(int width, int height, sf::Vector2f position,
+               float moveSpeed, float rotationSpeed);
 
-    void handleMovement(sf::Time deltaTime, sf::Vector2f mousePos);
-    void handleRotation(sf::Time deltaTime, float currentAngle, float targetAngle);
-    float getAlpha();
+    void handleMovement(float deltaTime, sf::Vector2f mousePos);
+    void handleRotation(float deltaTime, sf::Vector2f mousePos, sf::Vector2f relativeVector);
+
+    static float getAlphaBySpeed(float speed);
+    static float getAlphaBySize(float size);
 };

@@ -6,5 +6,5 @@ class ISimulatable
 {
 public:
     virtual void draw(sf::RenderWindow *window) = 0;
-    virtual void update(sf::Time deltaTime) = 0;
+    virtual void update(float deltaTime) = 0;
 };

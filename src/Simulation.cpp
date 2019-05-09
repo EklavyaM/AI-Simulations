@@ -15,7 +15,7 @@ void Simulation::processInput()
     mousePosition = sf::Mouse::getPosition(*window);
 }
 
-void Simulation::update(sf::Time deltaTime)
+void Simulation::update(float deltaTime)
 {
     for (ISimulatable *simulatable : simulatables)
         simulatable->update(deltaTime);

@@ -25,4 +25,6 @@ public:
     static float getRootDistance(float a, float b, float maxDistance);
 
     static void log(LogLevel logLevel, const char *message);
+
+    static float lerp(float a, float b, float t);
 };

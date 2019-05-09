@@ -21,6 +21,6 @@ public:
 
 private:
     void processInput() override;
-    void update(sf::Time deltaTime) override;
+    void update(float deltaTime) override;
     void render() override;
 };

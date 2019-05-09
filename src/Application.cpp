@@ -32,7 +32,7 @@ void Application::run()
         {
             timeSinceLastUpdate -= timePerFrame;
             processInput();
-            update(timePerFrame);
+            update(timePerFrame.asSeconds());
         }
 
         sf::sleep(timeSleep);
