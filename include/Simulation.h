@@ -16,6 +16,8 @@ private:
     std::list<ISimulatable *> simulatables;
 
 public:
+    Simulation() = delete;
+    ~Simulation();
     Simulation(int width, int height, const char *title, int frameRate);
     void addSimulatable(ISimulatable *simulatable);
 

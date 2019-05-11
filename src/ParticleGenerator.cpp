@@ -1,4 +1,3 @@
-#include <ctime>
 #include <iostream>
 
 #include "ParticleGenerator.h"
@@ -18,8 +17,12 @@ ParticleGenerator::ParticleGenerator(int boundaryWidth, int boundaryHeight,
     this->previousColor = startingColor;
     this->nextColor = getRandomColor();
 
-    setParticleParameters(10, 50, 1, 100, 1, 100, 60, 80);
     generateParticles(numberOfParticles);
+}
+
+ParticleGenerator::~ParticleGenerator()
+{
+    removeAllParticles();
 }
 
 void ParticleGenerator::draw(sf::RenderWindow *window)
@@ -84,30 +87,45 @@ void ParticleGenerator::setParticleParameters(float minSize, float maxSize,
 
     this->minParticleAlpha = minAlpha;
     this->maxParticleAlpha = maxAlpha;
+
+    resetAllParticles();
+}
+
+void ParticleGenerator::removeAllParticles()
+{
+    while (!particleList.empty())
+        delete particleList.front(), particleList.pop_front();
+}
+
+void ParticleGenerator::resetAllParticles()
+{
+    TestObject *testObject;
+    int size, moveSpeed, rotSpeed;
+
+    for (IParticle *particle : particleList)
+    {
+        testObject = (TestObject *)particle;
+
+        size = rand() % (maxParticleSize - minParticleSize) + minParticleSize;
+        moveSpeed = rand() % (maxParticleMovementSpeed - minParticleMovementSpeed) + minParticleMovementSpeed;
+        rotSpeed = rand() % (maxParticleRotationSpeed - minParticleRotationSpeed) + minParticleRotationSpeed;
+
+        testObject->setSize(size, size);
+        testObject->setMoveSpeed(moveSpeed);
+        testObject->setRotationSpeed(rotSpeed);
+        testObject->setParameters(minParticleSize, maxParticleSize, minParticleMovementSpeed, maxParticleMovementSpeed, minParticleAlpha, maxParticleAlpha);
+    }
 }
 
 void ParticleGenerator::generateParticles(int numberOfParticles)
 {
-    particleList.clear();
+    removeAllParticles();
 
     IParticle *particle;
-    int size;
-
-    srand(time(0));
     for (int i = 0; i < numberOfParticles; i++)
     {
-        size = (rand() % (maxParticleSize - minParticleSize) + minParticleSize);
-        particle = new TestObject(size,
-                                  size,
-                                  sf::Vector2f(rand() % boundaryWidth, rand() % boundaryHeight),
-                                  rand() % (maxParticleMovementSpeed - minParticleMovementSpeed) + minParticleMovementSpeed,
-                                  rand() % (maxParticleRotationSpeed - minParticleRotationSpeed) + minParticleRotationSpeed,
-                                  this->previousColor,
-                                  particleTexture);
+        particle = new TestObject(this->previousColor, particleTexture);
+        ((TestObject *)particle)->setPosition(rand() % boundaryWidth, rand() % boundaryHeight);
         particleList.push_front(particle);
     }
-
-    TestObject::setParameters(minParticleSize, maxParticleSize,
-                              minParticleMovementSpeed, maxParticleMovementSpeed,
-                              minParticleAlpha, maxParticleAlpha);
 }

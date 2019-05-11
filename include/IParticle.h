@@ -8,5 +8,6 @@
 class IParticle : public ISimulatable, public ITransformable
 {
 public:
+    virtual ~IParticle() {}
     virtual void setColor(sf::Color &color) = 0;
 };

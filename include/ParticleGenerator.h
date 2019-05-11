@@ -30,22 +30,24 @@ protected:
     int minParticleAlpha, maxParticleAlpha;
 
 public:
-    void draw(sf::RenderWindow *window) override;
-    void update(float deltaTime) override;
-
-    void setParticleColor(sf::Color color);
-
     ParticleGenerator() = delete;
+    ~ParticleGenerator();
     ParticleGenerator(int boundaryWidth, int boundaryHeight,
                       int numberOfParticles, sf::Color startingColor,
                       const sf::Texture &particleTexture, float colorChangeDelay);
 
-private:
-    void lerpTowardsNextColor(float deltaTime);
+    void draw(sf::RenderWindow *window) override;
+    void update(float deltaTime) override;
+    void removeAllParticles();
+    void resetAllParticles();
+    void setParticleColor(sf::Color color);
     void setParticleParameters(float minSize, float maxSize, float minMoveSpeed,
                                float maxMoveSpeed, float minRotSpeed, float maxRotSpeed,
                                float minAlpha, float maxAlpha);
-    void generateParticles(int numberOfParticles);
 
+private:
     static sf::Color getRandomColor();
+
+    void lerpTowardsNextColor(float deltaTime);
+    void generateParticles(int numberOfParticles);
 };

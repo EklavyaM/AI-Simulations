@@ -14,6 +14,8 @@ public:
         Error
     };
 
+    static float sqrt(float x);
+
     static float degToRad(float deg);
     static float radToDeg(float rad);
     static float getMagnitude(sf::Vector2f v);

@@ -1,8 +1,16 @@
 #include "Util.h"
 
+float Util::sqrt(float x)
+{
+    unsigned int i = *(unsigned int *)&x;
+    i += 127 << 23;
+    i >>= 1;
+    return *(float *)&i;
+}
+
 float Util::degToRad(float deg)
 {
-    return M_PI / 180 * deg;
+    return deg * (M_PI / 180);
 }
 
 float Util::radToDeg(float rad)
@@ -12,12 +20,16 @@ float Util::radToDeg(float rad)
 
 float Util::getAngle(sf::Vector2f a, sf::Vector2f b)
 {
-    return acos(getDotProduct(a, b) / (getMagnitude(a) * getMagnitude(b)));
+    float magA = getMagnitude(a);
+    float magB = getMagnitude(b);
+    if (magA == 0 || magB == 0)
+        return 0;
+    return acos(getDotProduct(a, b) / magA * magB);
 }
 
 float Util::getMagnitude(sf::Vector2f v)
 {
-    return sqrt(v.x * v.x + v.y * v.y);
+    return Util::sqrt(v.x * v.x + v.y * v.y);
 }
 
 float Util::getDistance(sf::Vector2f a, sf::Vector2f b)

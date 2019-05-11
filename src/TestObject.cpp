@@ -6,47 +6,24 @@
 
 #include "Util.h"
 
-float TestObject::speedMin;
-float TestObject::speedMax;
-float TestObject::sizeMin;
-float TestObject::sizeMax;
-float TestObject::alphaMin;
-float TestObject::alphaMax;
-
-TestObject::TestObject(int width, int height, sf::Vector2f position,
-                       float moveSpeed, float rotationSpeed)
+TestObject::TestObject(sf::Color color)
 {
-    RectangularBound = new sf::RectangleShape(sf::Vector2f(width, height));
-    RectangularBound->setPosition(position);
-
-    this->moveSpeed = moveSpeed;
-    this->rotationSpeed = rotationSpeed;
+    RectangularBound = new sf::RectangleShape();
 }
 
-TestObject::TestObject(int width, int height, sf::Vector2f position,
-                       float moveSpeed, float rotationSpeed, sf::Color color)
-    : TestObject(width, height, position, moveSpeed, rotationSpeed)
+TestObject::TestObject(sf::Color color, const sf::Texture &texture) : TestObject(color)
 {
-    this->shapeColor = color;
-}
-
-TestObject::TestObject(int width, int height, sf::Vector2f position,
-                       float moveSpeed, float rotationSpeed,
-                       sf::Color color, const sf::Texture &texture)
-    : TestObject(width, height, position, moveSpeed, rotationSpeed)
-{
-    this->shapeColor = color;
     RectangularBound->setTexture(&texture);
+}
+
+TestObject::~TestObject()
+{
+    delete RectangularBound;
 }
 
 void TestObject::draw(sf::RenderWindow *window)
 {
     this->shapeColor.a = getAlphaBySpeed(moveSpeed);
-
-    /* std::cout << (int)shapeColor.r << ", "
-              << (int)shapeColor.g << ", "
-              << (int)shapeColor.b << ", "
-              << (int)shapeColor.a << std::endl; */
 
     RectangularBound->setFillColor(this->shapeColor);
     window->draw(*RectangularBound, sf::BlendAdd);
@@ -70,22 +47,20 @@ void TestObject::handleRotation(float deltaTime, sf::Vector2f mousePos,
                                 sf::Vector2f relativeVector)
 {
     float rot = Util::degToRad(RectangularBound->getRotation());
-
     forward = sf::Vector2f(cos(rot), sin(rot));
-    float rotDist = Util::getAngle(relativeVector, forward);
 
+    float rotDist = Util::getAngle(relativeVector, forward);
     float targetAngle = atan2(relativeVector.y, relativeVector.x);
     float diff = targetAngle - rot;
 
-    // Make sure you turn less than 180 degree
     while (diff < -M_PI)
         diff += 2 * M_PI;
     while (diff > M_PI)
         diff -= 2 * M_PI;
 
-    if (diff > 0)
+    if (diff > 0.05f)
         RectangularBound->rotate(rotDist * deltaTime * rotationSpeed);
-    else if (diff < 0)
+    else if (diff < -0.05f)
         RectangularBound->rotate(-rotDist * deltaTime * rotationSpeed);
 }
 
@@ -100,7 +75,7 @@ float TestObject::getAlphaBySpeed(float speed)
 float TestObject::getAlphaBySize(float size)
 {
     float alpha = (size - sizeMin) * (alphaMax - alphaMin);
-    alpha /= (sizeMin - sizeMax);
+    alpha /= (sizeMax - sizeMin);
     alpha += alphaMin;
     return alpha;
 }
@@ -120,16 +95,26 @@ void TestObject::setColor(sf::Color &color)
     this->shapeColor = color;
 }
 
+void TestObject::setMoveSpeed(float moveSpeed)
+{
+    this->moveSpeed = moveSpeed;
+}
+
+void TestObject::setRotationSpeed(float rotationSpeed)
+{
+    this->rotationSpeed = rotationSpeed;
+}
+
 void TestObject::setParameters(float sizeMin, float sizeMax,
                                float speedMin, float speedMax,
                                float alphaMin, float alphaMax)
 {
-    TestObject::sizeMin = sizeMin;
-    TestObject::sizeMax = sizeMax;
+    this->sizeMin = sizeMin;
+    this->sizeMax = sizeMax;
 
-    TestObject::speedMin = speedMin;
-    TestObject::speedMax = speedMax;
+    this->speedMin = speedMin;
+    this->speedMax = speedMax;
 
-    TestObject::alphaMin = alphaMin;
-    TestObject::alphaMax = alphaMax;
+    this->alphaMin = alphaMin;
+    this->alphaMax = alphaMax;
 }

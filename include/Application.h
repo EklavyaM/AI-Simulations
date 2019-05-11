@@ -12,7 +12,7 @@ protected:
 public:
     Application() = delete;
     Application(int width, int height, const char *title, int frameRate);
-    ~Application();
+    virtual ~Application();
 
     void run();
 
