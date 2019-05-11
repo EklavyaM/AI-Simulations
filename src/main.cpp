@@ -38,7 +38,7 @@ void runSimulation(const sf::Texture &texture)
 	ParticleGenerator *pg;
 	for (int i = 0; i < 3; i++)
 	{
-		pg = new ParticleGenerator(WIDTH, HEIGHT, 7000, getRandomColor(), texture, 5);
+		pg = new ParticleGenerator(WIDTH, HEIGHT, 4000, getRandomColor(), texture, 5);
 
 		int minSize = rand() % 10 + 10;
 		int maxSize = rand() % 18 + 21;

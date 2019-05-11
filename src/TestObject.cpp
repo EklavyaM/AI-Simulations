@@ -24,7 +24,6 @@ TestObject::~TestObject()
 void TestObject::draw(sf::RenderWindow *window)
 {
     this->shapeColor.a = getAlphaBySpeed(moveSpeed);
-
     RectangularBound->setFillColor(this->shapeColor);
     window->draw(*RectangularBound, sf::BlendAdd);
 }
